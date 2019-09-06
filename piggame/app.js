@@ -7,14 +7,21 @@ GAME RULES:
 - The player can choose to 'Hold', which means that his ROUND score gets added to his GLBAL score. After that, it's the next player's turn
 - The first player to reach 100 points on GLOBAL score wins the game
 
+EXTRA 
+- A Player looses his ENTIRE score when he rolls two 6 in a row. After that it's the next player's turn. (Always save the previous dice 
+    roll in a separete variable)
 */
 
-var scores, roundScores, activePlayer, gamePlaying;
+var scores, roundScores, activePlayer, gamePlaying, x;
 
 init();
 
-//document.querySelector('#current-' + activePlayer).textContent = dice;
+var previousDice = 0;
 
+//var x = document.querySelector(".final-score").value;
+//console.log(x);
+
+//document.querySelector('#current-' + activePlayer).textContent = dice;
 //document.querySelector('#current-' + activePlayer).innerHTML = '<em>' + dice + '</em>';
 
 
@@ -23,13 +30,20 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
         // 1. Random number
         var dice = Math.floor(Math.random() * 6) + 1;
         
+        // 4.EXTRA Player looses entire score when rolls two 6 in a row
+        if (dice === previousDice && previousDice === 6) {
+            scores[activePlayer] = 0;
+            nextPlayer();
+            document.getElementById('score-' + activePlayer).textContent = '0';
+        }
+
         // 2. Display the result
         var diceDOM = document.querySelector('.dice');
         diceDOM.style.display = 'block';
         diceDOM.src = 'dice-' + dice + '.png';
 
         // 3. Update the round score IF the rolled number was NOT a 1
-        if (dice !== 1) {
+         if (dice !== 1) {
             //Add score
             roundScores += dice;
             document.querySelector('#current-' + activePlayer).textContent = roundScores;
@@ -37,7 +51,9 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
             //Next Player
             nextPlayer();
         }
-    }
+        previousDice = dice;
+        
+    } 
 
 });
 
@@ -47,9 +63,17 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
         scores[activePlayer] += roundScores;
         //Update the UI
         document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
-
+        //var inputScore = document.getElementById('input').value;
+        var input = document.querySelector('.final-score').value;
+        var winningScore;
+        if(input) {
+            winningScore = input;
+        } else {
+            winningScore = 100;
+        }
+       
         // Check if player won the game
-        if (scores[activePlayer] >= 20) {
+        if (scores[activePlayer] >= winningScore) {
             document.querySelector('#name-' + activePlayer).textContent = 'Winner';
             document.querySelector('.dice').style.display = 'none';
             document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
@@ -83,7 +107,7 @@ function init() {
     activePlayer = 0;
     roundScores = 0;
     gamePlaying = true;
-    
+
     document.querySelector('.dice').style.display = 'none';
 
     document.getElementById('score-0').textContent = '0';
@@ -98,3 +122,4 @@ function init() {
     document.querySelector('.player-1-panel').classList.remove('active');
     document.querySelector('.player-0-panel').classList.add('active');
 }
+
