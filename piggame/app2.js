@@ -1,30 +1,61 @@
-/*
-GAME RULES:
 
-- The game has 2 players, playing in rounds
-- In each turn, a player rolls a dice as many times as he whishes. Each result get added to his ROUND score
-- BUT, if the player rolls a 1, all his ROUND score gets lost. After that, it's the next player's turn
-- The player can choose to 'Hold', which means that his ROUND score gets added to his GLBAL score. After that, it's the next player's turn
-- The first player to reach 100 points on GLOBAL score wins the game
+//NEW CHALLENGE 
+//CONDITIONS:
+// create button that takes the value from the placeholder when clicked 
+// if there is no value or value is not a number , then the program does not accept the value
+// When we submit the number into value and click the button, the program executes and the field becomes clear
+// 
 
-EXTRA 
-- A Player looses his ENTIRE score when he rolls two 6 in a row. After that it's the next player's turn. (Always save the previous dice 
-    roll in a separete variable)
-- Add an input field to HTML where players can set the winning score
-- Add another dice to the game. The player looses his current score when one of them is a 1.
-*/
 
-var scores, roundScores, activePlayer, gamePlaying;
+var scores, roundScores, activePlayer, gamePlaying, winningScore, newParagraph;
 
 init();
 
 var previousDice = 0;
-
+gamePlaying = false; 
 //var x = document.querySelector(".final-score").value;
 //console.log(x);
 
 //document.querySelector('#current-' + activePlayer).textContent = dice;
 //document.querySelector('#current-' + activePlayer).innerHTML = '<em>' + dice + '</em>';
+document.querySelector('.btn-submit').addEventListener('click', setWinningScore );
+
+/*
+function checkIfWorks() {
+    document.querySelector('#current-1').innerHTML = 777;
+}
+*/
+
+
+function setWinningScore() {
+    var inputValue = document.querySelector('.final-score').value;
+    console.log(inputValue);
+    var input = document.querySelector('.final-score');
+    if(inputValue > 0) {
+        gamePlaying = true;
+        winningScore = inputValue;
+        document.querySelector('.winning-score').innerHTML = "Your Winning Score is " + inputValue;
+        document.querySelector('.final-score').value = '';
+        input.setAttribute("type", "hidden");
+        
+       /* var btn = document.createElement("BUTTON");
+        btn.innerHTML = "SET NEW SCORE";
+        document.body.appendChild(btn);*/
+        //input.setAttribute("placeholder", "HAVE A GREAT GAME!");
+        //input.classList.add("green");
+        //newParagraph = document.createElement("p");
+        //newParagraph.innerHTML = "<p>HAVE A GREAT GAME!</p>";
+        //newParagraph.classList.add("green");
+        //document.body.appendChild(newParagraph);
+
+
+    } else {
+        document.querySelector('.final-score').value = '';
+        input.setAttribute("placeholder", "YOU ENTERED WRONG VALUE");
+        gamePlaying = false;
+        input.classList.add("red");
+        }
+}
 
 
 document.querySelector('.btn-roll').addEventListener('click', function() {
@@ -34,11 +65,11 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
         var dice2 = Math.floor(Math.random() * 6) + 1;
         
         // 4.EXTRA Player looses entire score when rolls two 6 in a row
-        if (dice === previousDice && previousDice === 6) {
+       /* if (dice === previousDice && previousDice === 6) {
             scores[activePlayer] = 0;
             document.getElementById('score-' + activePlayer).textContent = '0';
             nextPlayer();
-        }
+        } */
 
         // 2. Display the result
         var diceDOM = document.querySelector('.dice');
@@ -58,7 +89,7 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
             //Next Player
             nextPlayer();
         }
-        previousDice = dice;
+        //previousDice = dice;
         
     } 
 
@@ -71,6 +102,7 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
         //Update the UI
         document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
         //var inputScore = document.getElementById('input').value;
+        /*
         var input = document.querySelector('.final-score').value;
         var winningScore;
         if(input) {
@@ -78,7 +110,11 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
         } else {
             winningScore = 100;
         }
-       
+       */
+
+
+
+
         // Check if player won the game
         if (scores[activePlayer] >= winningScore) {
             document.querySelector('#name-' + activePlayer).textContent = 'Winner';
@@ -116,6 +152,10 @@ function init() {
     activePlayer = 0;
     roundScores = 0;
     gamePlaying = true;
+    
+
+    document.querySelector('.final-score').setAttribute("type", "text");
+    document.querySelector('.winning-score').innerHTML = "";
 
     document.querySelector('.dice').style.display = 'none';
     document.querySelector('.dice2').style.display = 'none';

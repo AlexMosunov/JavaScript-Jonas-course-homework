@@ -141,6 +141,7 @@ i {
 .btn-new { top: 45px;}
 .btn-roll { top: 403px;}
 .btn-hold { top: 467px;}
+.btn-submit { top: 560px; }
 
 .dice {
     position: absolute;
@@ -170,4 +171,35 @@ i {
     transform: translateX(-50%);
     top: 520px;
     text-align: center;
+    height: 30px;
+    width: 250px;
+    border: 1px double rgb(111, 151, 57);
+}
+
+.winning-score {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 520px;
+    text-align: center;
+    top: 5px;
+    font-size: 120%;
+    color: rgb(52, 126, 52);
+
+}
+
+.red {
+    background-color: rgb(243, 131, 131);
+}
+
+.green {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 520px;
+    text-align: center;
+    top: 580px;
+    font-size: 120%;
+    color: rgb(0, 172, 43);w
+
 }
