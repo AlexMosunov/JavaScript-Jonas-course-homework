@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Asynchronous JavaScript</title>
+</head>
+<body>
+    <h1>Asynchronous JavaScript</h1>
+    <script>
+        
+
+        /*
+        const getIDs = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve([154, 321, 524, 325]);
+                //reject([154, 321, 524, 325]);
+            }, 1500);
+        });
+
+        const getRecipe = recID => {
+            return new Promise((resolve, reject) => {
+                setTimeout(ID => {
+                    const recipe = {title: 'Fresh tomato soup', publisher: 'Jonas'};
+                    resolve(`${ID}: ${recipe.title}`);
+                }, 1500, recID);
+            });
+        };
+
+        const getRelated = publisher => {
+            return new Promise((resolve, rejecct) => {
+                setTimeout(pub => {
+                    const recipe2 = {title: 'Italian Pizza', publisher: 'Jonas'};
+                    resolve(`${pub}: ${recipe2.title}`);
+                }, 1000, publisher);
+            });
+        };
+        */
+
+        //promises 
+        /*
+        getIDs
+        .then(IDs => {
+            console.log(IDs);
+            return getRecipe(IDs[2]);
+        })
+        .then(recipe => {
+            console.log(recipe);
+            return getRelated('Jonas Schmedtmann');
+        })
+        .then(recipe2 => {
+            console.log(recipe2);
+        })
+        .catch(error => {
+            console.error('ERROR!')
+        });
+        */
+
+        /*
+        // Async/await
+        async function getRecipesAW() {
+            const IDs = await getIDs;
+            console.log(IDs);
+            const recipe = await getRecipe(IDs[2]);
+            console.log(recipe);
+            const related = await getRelated('Jonas Schmedtmann');
+            console.log(related);
+
+            return recipe;
+        }
+        getRecipesAW().then(result => console.log(`${result} is the best ever`));
+        */
+
+        // PROMISES
+        function getWeather(woeid) {
+            fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${woeid}/`)
+        .then(result => {
+            //console.log(result);
+            return result.json();
+        })
+        .then(data => {
+            //console.log(data);
+            const today = data.consolidated_weather[0];
+            console.log(`Temperature in ${data.title} today is between ${today.min_temp} and ${today.max_temp}`)
+        })
+        .catch(error => console.log(error));
+        }
+
+        getWeather(924938);
+
+        
+        // ASYNC/AWAIT
+        async function getWeatherAW(woeid) {
+            try {
+                const result = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${woeid}/`);
+                const data = await result.json();
+                const tomorrow = data.consolidated_weather[1];
+                console.log(`Temperature tomorrow in ${data.title} is between ${tomorrow.min_temp} and ${tomorrow.max_temp}`);
+                return data;
+            } catch(error) {
+                alert(error);
+            }
+        }
+
+        getWeatherAW(924938);
+        let dataSanFrancisco;
+        getWeatherAW(2487956).then(data => {
+            dataSanFrancisco = data;
+            console.log(dataSanFrancisco);
+        });
+
+        console.log('hello');
+
+    </script>
+</body>
+</html>
